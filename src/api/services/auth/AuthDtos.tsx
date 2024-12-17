@@ -1,4 +1,6 @@
-interface AuthContextType {
+
+// AuthState represents the authentication state of a user.
+export interface AuthState {
     isAuthenticated: boolean;
     id: string | null;
     name: string | null;
@@ -7,5 +9,3 @@ interface AuthContextType {
     organization: string | null;
     isAdmin: boolean | null;
 }
-
-export type ValidateSessionResponse = AuthContextType | { error: string };
