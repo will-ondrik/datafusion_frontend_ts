@@ -1,4 +1,4 @@
-import { ValidateSessionResponse } from "./AuthDtos";
+import { AuthState } from "./AuthDtos";
 
 class AuthService {
     private API_URL: string | null = null;
@@ -23,8 +23,6 @@ class AuthService {
                 const errorData = await response.json().catch(() => null);
                 const message = errorData?.message || 'Logout failed due to server error.';
                 console.error(`Logout failed: ${message}`);
-
-                // Return an appropriate error
                 return new Error(message);
             }
 
@@ -39,6 +37,13 @@ class AuthService {
         }
     }
 
+    /**
+     * Logs in the user by way of Google OAuth2
+     * 
+     * User is redirected to the server url to initiate the Google login process.
+     * 
+     * @returns A promise resolving a success message or rejecting with an error.
+     */
     async handleGoogleLogin(): Promise<{ message: string } | Error> {
         try {
             if (!this.API_URL) {
@@ -53,16 +58,13 @@ class AuthService {
         }
     }
 
-
-
     /**
      * Validates the user's session with the server.
      * 
      * @returns A Promise that resolves to one of the following:
      * - `AuthContextType` if the session is valid or invalid.
-     * - An error object `{ error: string }` if there was a network or server issue.
      */
-    async validateSession(): Promise< ValidateSessionResponse | Error > {
+    async validateSession(): Promise<AuthState> {
         try {
             const response = await fetch(`${this.API_URL}/auth/validate-session`, {
                 method: "GET",
@@ -70,31 +72,35 @@ class AuthService {
             });
 
             if (!response.ok) {
-                return { 
-                    isAuthenticated: false, 
-                    id: null, 
-                    name: null, 
-                    email: null, 
-                    tier: null, 
-                    organization: null, 
-                    isAdmin: null, 
-                }
+                throw new Error("Session is invalid or expired.");
             }
 
             const data = await response.json();
-            return { 
-                isAuthenticated: true, 
-                id: data.id, 
-                name: data.name, 
-                email: data.email, 
-                tier: data.tier, 
-                organization: data.organization, 
-                isAdmin: data.isAdmin 
-            }
+
+            // Return valid AuthState
+            return {
+                isAuthenticated: true,
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                tier: data.tier,
+                organization: data.organization,
+                isAdmin: data.isAdmin,
+            };
         } catch (err) {
-            return new Error("Session is invald.")
+            console.error("Validation error:", err);
+
+            // Return null AuthState
+            return {
+                isAuthenticated: false,
+                id: null,
+                name: null,
+                email: null,
+                tier: null,
+                organization: null,
+                isAdmin: null,
+            };
         }
-    
     }
 
 }
