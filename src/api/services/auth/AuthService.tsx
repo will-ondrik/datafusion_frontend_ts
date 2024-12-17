@@ -1,10 +1,11 @@
 import { AuthState } from "./AuthDtos";
+import { environment } from "../../../environment/environment";
 
 class AuthService {
     private API_URL: string | null = null;
 
-    setApiUrl(url: string) {
-        this.API_URL = url;
+    setApiUrl() {
+        this.API_URL = environment.API_BASE_URL;
     }
 
     /**
