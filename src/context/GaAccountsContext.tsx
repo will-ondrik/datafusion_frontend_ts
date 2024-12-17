@@ -16,6 +16,7 @@ export const GaAccountsProvider: React.FC<ProviderProps> = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const googleService = new GoogleService();
+    // Get the user ID from the AuthContext
     const { id } = useAuth();
 
     /**
@@ -49,12 +50,13 @@ export const GaAccountsProvider: React.FC<ProviderProps> = ({ children }) => {
         }
     }
 
+    // Call fetchGaAccounts on component mount
     useEffect(() => {
         if (!id) {
             return;
         }
         fetchGaAccounts(id);
-    }, [id]);
+    }, [id]); // Only call fetchGaAccounts when the user ID changes
 
 
     return (
