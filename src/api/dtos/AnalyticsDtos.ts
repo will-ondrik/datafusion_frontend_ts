@@ -47,3 +47,28 @@ export interface GaProperty {
     googleAccountId: string | null;
     isDefault: boolean | null;
 }
+
+/**
+ * MetricData represents the shape of the row data returned from a Google Analytics report.
+ */
+export interface MetricData {
+    type: string;
+    dimension: { [key: string]: string };
+    metric: { [key: string]: number };
+}
+
+/**
+ * GaReport represents the shape of a formatted Google Analytics report.
+ */
+export interface GaReport {
+    metricTotals: { [key: string]: number };
+    data: MetricData[][];
+}
+
+/**
+ * GaReportsResponse represents the current period and comparison period reports for a specific dashboard tab.
+ */
+export interface GaReportsResponse {    
+    currPeriod: GaReport;
+    compPeriod: GaReport;
+}
