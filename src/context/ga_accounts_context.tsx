@@ -30,19 +30,19 @@ export const GaAccountsProvider: React.FC<ProviderProps> = ({ children }) => {
         setIsLoading(true);
         try {
             const result = await analyticsService.getUserGaAccounts(userId);
-           setAccounts(result);
+            setAccounts(result);
 
-           // Set the default account
-           const defaultAccount = result.Accounts.find((account: GaAccount) => account.isDefault);
-           if (defaultAccount) {
-            setDefaultAccount(defaultAccount);
-           }
+            // Set the default account
+            const defaultAccount = result.accounts.find((account: GaAccount) => account.isDefault);
+            if (defaultAccount) {
+                setDefaultAccount(defaultAccount);
+            }
 
-           // Set the default property
-           const defaultProperty = defaultAccount.Properties.find((property: GaProperty) => property.isDefault);
-              if (defaultProperty) {
-                setDefaultProperty(defaultProperty);
-              }
+            // Set the default property
+            const defaultProperty = defaultAccount.properties.find((property: GaProperty) => property.isDefault);
+                if (defaultProperty) {
+                    setDefaultProperty(defaultProperty);
+                }
         } catch(err) {
             console.error("Failed to fetch GA accounts:", err);
         } finally {
