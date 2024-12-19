@@ -1,5 +1,5 @@
 import React from 'react';
-import './OverviewMetrics.css'
+import './overview_metrics.css'
 import { useGaData } from '../../../context/ga_data_context';
 import { GaDataProps } from '../../../types/props/Props';
 
