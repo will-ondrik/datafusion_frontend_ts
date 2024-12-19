@@ -1,0 +1,80 @@
+#container {
+    width: 100vw;
+    height: 100vh;
+    border: 1px red solid;
+    display: flex;
+    flex-direction: column;
+}
+
+#name-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#tabs {
+    display: flex;
+    flex-direction: row;
+}
+
+.tab {
+    margin-right: 10px;
+}
+
+#cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    border: 1px black solid;
+}
+
+.metric-graph {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid green;
+}
+
+.metric-icon {
+    padding-bottom: 0.5rem;
+}
+
+.percent-number {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid red;
+}
+
+#big-chart {
+    display: flex;
+    justify-content: center;
+    border: 1px purple solid;
+}
+
+#map-pie {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#myChart {
+    width: 400px;
+    height: 400px;
+    border: 1px solid #ddd;
+}
+
+.metric {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active {
+    background-color: grey;
+}
