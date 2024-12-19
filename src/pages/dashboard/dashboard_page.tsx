@@ -1,4 +1,4 @@
-import './DashboardPage.css';
+import './dashboard_page.css';
 import OverviewMetrics from '../../components/metrics/website-summary/overview_metrics';
 import EngagementMetrics from '../../components/metrics/user-demographics/engagement_metrics';
 import AudienceMetrics from '../../components/metrics/audience/audience_metrics';
@@ -31,24 +31,26 @@ function DashboardPage() {
      * @returns an array of current and comparison period data
      */
     const parseDashboardData = (batchReportsArr: any[]): GaReportsResponse => {
+        console.log('batch reports', batchReportsArr);
         if (!Array.isArray(batchReportsArr) || batchReportsArr.length === 0) {
             throw new Error("Invalid or empty batch reports array.");
         }
-    
-        // Destructure the current and comparison period data
-        const { CurrPeriod, CompPeriod } = batchReportsArr[0];
+        
+        // Extract the current and comparison period data
+        const CurrPeriod = batchReportsArr[0].CurrPeriod;
+        const CompPeriod = batchReportsArr[0].CompPeriod;
+        console.log('CurrPeriod', CurrPeriod);
     
         const currPeriod: GaReport = {
             metricTotals: CurrPeriod?.metricTotals || {},
-            data: CurrPeriod?.data || [],
+            data: CurrPeriod?.reports || [],
         };
     
         const compPeriod: GaReport = {
             metricTotals: CompPeriod?.metricTotals || {},
-            data: CompPeriod?.data || [],
+            data: CompPeriod?.reports || [],
         };
     
-        // Return the structured response
         return {
             currPeriod,
             compPeriod,

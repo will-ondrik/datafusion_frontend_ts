@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useGaAccounts } from './ga_accounts_context';
 import { ProviderProps } from '../types/props/Props';
 import AnalyticsService from '../api/services/analytics_service';
-import { GaRequest, GaTimePeriod } from '../api/dtos/analytics_dtos';
+import { GaReportsResponse, GaRequest, GaTimePeriod } from '../api/dtos/analytics_dtos';
 
 /** Context type definition */
 interface GaDataContextType {
@@ -28,7 +28,7 @@ const GaDataContext = createContext<GaDataContextType | null>(null);
 export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
     // State variables
     const [tabData, setTabData] = useState<Record<string, any>>({});
-    const [activeTab, setActiveTab] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState<string | null>('overview');
     const [startPeriod, setStartPeriod] = useState<GaTimePeriod | null>(null);
     const [comparisonPeriod, setComparisonPeriod] = useState<GaTimePeriod | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -89,20 +89,18 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
     ) => {
         setIsLoading(true);
         setError(null);
-
-        const defaultPropertyId = defaultProperty?.propertyId ?? "";
-
-        const payload: GaRequest = {
-            propertyId: defaultPropertyId,
-            tabName,
-            startPeriod,
-            comparisonPeriod,
-            timeframe: 'date', // static - need to make it dynamic
-        };
-
         try {
-            const result = await analyticsService.getDashboardData(payload);
+            const defaultPropertyId = defaultProperty?.id ?? "";
 
+            const payload: GaRequest = {
+                propertyId: defaultPropertyId,
+                tabName,
+                startPeriod,
+                comparisonPeriod,
+                timeframe: 'date', // static - need to make it dynamic
+            };
+
+            const result = await analyticsService.getDashboardData(payload);
             setTabData((prevData) => ({...prevData, [tabName]: {
                     ...prevData[tabName], [`${startPeriod.startDate}-${startPeriod.endDate}`]: {
                         data: [result],
@@ -119,17 +117,10 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
         }
     };
 
-    /** Initialize start and comparison periods when the provider mounts */
-    useEffect(() => {
-        const defaultStartPeriod = generateDefaultStartPeriod();
-        const defaultComparisonPeriod = generateComparisonPeriod(defaultStartPeriod);
-        setStartPeriod(defaultStartPeriod);
-        setComparisonPeriod(defaultComparisonPeriod);
-    }, []);
-
-    /** Fetch data for the active tab when dependencies change */
+     /** Fetch data for the active tab when dependencies change */
     useEffect(() => {
         if (accountsLoading || !defaultProperty || !activeTab || !startPeriod || !comparisonPeriod) {
+            console.log(`accountsLoading: ${accountsLoading}, activeTab: ${activeTab}, startPeriod: ${startPeriod}, comparisonPeriod: ${comparisonPeriod}`);
             return;
         }
 
@@ -140,6 +131,15 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
         }
     }, [activeTab, startPeriod, comparisonPeriod, accountsLoading, defaultProperty]);
 
+    /** Initialize start and comparison periods when the provider mounts */
+    useEffect(() => {
+        const defaultStartPeriod = generateDefaultStartPeriod();
+        const defaultComparisonPeriod = generateComparisonPeriod(defaultStartPeriod);
+        setStartPeriod(defaultStartPeriod);
+        setComparisonPeriod(defaultComparisonPeriod);
+    }, []);
+
+   
     /** Provide the state and functions through the context */
     return (
         <GaDataContext.Provider
