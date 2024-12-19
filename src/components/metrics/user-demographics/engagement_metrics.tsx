@@ -6,6 +6,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
         return <div>No data available for the engagement tab.</div>;
     }
 
+    /*
     const {
         averageSessionDuration,
         userEngagementDuration,
@@ -14,6 +15,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
         geoData,
         deviceEngagementData,
     } = data;
+     */
 
     return (
         <div id="metrics">
@@ -27,7 +29,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Average Session Duration</div>
                         </div>
                         <div className="metric">
-                            <span>{averageSessionDuration}</span>
+                           {/* <span>{averageSessionDuration}</span> */}
                         </div>
                     </div>
                 </div>
@@ -40,7 +42,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">User Engagement Duration</div>
                         </div>
                         <div className="metric">
-                            <span>{userEngagementDuration}</span>
+                           {/* <span>{userEngagementDuration}</span> */}
                         </div>
                     </div>
                 </div>
@@ -53,7 +55,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Engagement Rate</div>
                         </div>
                         <div className="metric">
-                            <span>{engagementRate}%</span>
+                           {/* <span>{engagementRate}%</span> */}
                         </div>
                     </div>
                 </div>
@@ -69,20 +71,20 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
             <div id="map-pie">
                 {/* Geomap User Engagement by Country */}
                 <div id="map">
-                    {geoData ? (
+                   {/* {geoData ? (
                         <div>Geomap User Engagement by Country</div>
                     ) : (
                         <div>No geographic data available.</div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Pie Chart of Engagement Rate by Device */}
                 <div id="pie">
-                    {deviceEngagementData ? (
+                   {/* {deviceEngagementData ? (
                         <div>Pie Chart of Engagement Rate by Device</div>
                     ) : (
                         <div>No device engagement data available.</div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

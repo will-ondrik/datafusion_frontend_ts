@@ -6,7 +6,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
         return <div>No data available for the time and location tab.</div>;
     }
 
-    const { sessionsByHour, pageViewsByDay, usersByRegion, timeTrendsData, geoData, sessionByHourData } = data;
+    //const { sessionsByHour, pageViewsByDay, usersByRegion, timeTrendsData, geoData, sessionByHourData } = data;
 
     return (
         <div id="metrics">
@@ -20,7 +20,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Sessions By Hour</div>
                         </div>
                         <div className="metric">
-                            <span>{sessionsByHour}</span>
+                          {/*  <span>{sessionsByHour}</span> */}
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Page Views by Day</div>
                         </div>
                         <div className="metric">
-                            <span>{pageViewsByDay}</span>
+                           {/* <span>{pageViewsByDay}</span> */}
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Users by Region</div>
                         </div>
                         <div className="metric">
-                            <span>{usersByRegion}</span>
+                          {/*  <span>{usersByRegion}</span> */}
                         </div>
                     </div>
                 </div>
@@ -62,20 +62,20 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
             <div id="map-pie">
                 {/* Geomap of Users by Country */}
                 <div id="map">
-                    {geoData ? (
+                   {/* {geoData ? (
                         <div>Geomap of Users by Country</div>
                     ) : (
                         <div>No geographic data available.</div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Pie Chart of Sessions by Hour */}
                 <div id="pie">
-                    {sessionByHourData ? (
+                   {/* {sessionByHourData ? (
                         <div>Pie Chart of Sessions by Hour</div>
                     ) : (
                         <div>No session by hour data available.</div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

@@ -43,7 +43,7 @@ export interface GaAccount {
  */
 export interface GaProperty {
     name: string | null;
-    propertyId: string | null;
+    id: string | null;
     googleAccountId: string | null;
     isDefault: boolean | null;
 }

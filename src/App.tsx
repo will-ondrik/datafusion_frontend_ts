@@ -1,31 +1,31 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Tier1Route from './guards/Tier1Route';
-import Tier2Route from './guards/Tier2Route';
-import Tier3Route from './guards/Tier3Route';
+import Tier1Route from './guards/tier1_guard';
+import Tier2Route from './guards/tier2_guard';
+import Tier3Route from './guards/tier3_guard';
 import './App.css'
 import Spinner from './components/animations/spinner/spinner';
 
 //const AdManagement = lazy(() => import(''));
 //const Analytics = lazy(() => import('./user-tiers/shared/pages/analytics/AnalyticsPage'));
-const ApiIntegration = lazy(() => import('./pages/api-integration/ApiIntegrationPage'));
-const BillingSubscription = lazy(() => import('./pages/billing-subscription/BillingPage'));
+const ApiIntegration = lazy(() => import('./pages/api-integration/api_integration_page'));
+const BillingSubscription = lazy(() => import('./pages/billing-subscription/billing_page'));
 //const CompetitorAnalysis = lazy(() => import('./user-tiers/tier3/pages/competitor-analysis/CompetitorAnalysisPage'));
-const ConfirmEmail = lazy(() => import('./pages/confirm-email/ConfirmEmailPage'))
-const Contact = lazy(() => import('./pages/contact-us/ContactUsPage'));
-const Dashboard = lazy(() => import('./pages/dashboard/DashboardPage'));
-const Landing = lazy(() => import('./pages/landing/LandingPage'));
-const Login = lazy(() => import('./pages/login/LoginPage'));
+const ConfirmEmail = lazy(() => import('./pages/confirm-email/confirm_email_page'))
+const Contact = lazy(() => import('./pages/contact-us/contact_us_page'));
+const Dashboard = lazy(() => import('./pages/dashboard/dashboard_page'));
+const Landing = lazy(() => import('./pages/landing/landing_page'));
+const Login = lazy(() => import('./pages/login/login_page'));
 //const Notifications = lazy(() => import('./user-tiers/shared/pages/notifications/NotificationsPage'));
-const Profile = lazy(() => import('./pages/profile/ProfilePage'));
-const Pricing = lazy(() => import('./pages/pricing/PricingPage'));
-const Registration = lazy(() => import('./pages/register/RegistrationPage'))
-const ReportGenerator = lazy(() => import('./pages/report-generation/ReportGenerationPage'));
-const ResetPassword = lazy(() => import('./pages/reset-password/ResetPasswordPage'));
+const Profile = lazy(() => import('./pages/profile/profile_page'));
+const Pricing = lazy(() => import('./pages/pricing/pricing_page'));
+const Registration = lazy(() => import('./pages/register/registration_page'))
+const ReportGenerator = lazy(() => import('./pages/report-generation/report_generation_page'));
+const ResetPassword = lazy(() => import('./pages/reset-password/reset_password_page'));
 //const SeoOptimization = lazy(() => import('./user-tiers/shared/pages/seo-optimization/SeoPage'))
-const Settings = lazy(() => import('./pages/settings/SettingsPage'));
+const Settings = lazy(() => import('./pages/settings/settings_page'));
 //const Subscribe = lazy(() => import('./shared/pages/subscribe/SubscribePage'));
-const Support = lazy(() => import('./pages/support/SupportPage'))
+const Support = lazy(() => import('./pages/support/support_page'))
 
 
 function App() {

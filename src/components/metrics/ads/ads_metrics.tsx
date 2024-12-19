@@ -1,86 +1,84 @@
 import React from 'react';
-import { GaDataProps } from '../../../types/props/Props';
 
-const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
+const AdsMetrics = ({ data }) => {
     if (!data) {
-        return <div>No data available for the page traffic tab.</div>;
+        return <div>No data available for the ads tab.</div>;
     }
 
-
-   // const { sessions, pageViews, bounceRate, pagePerformanceData, geoData, trafficSourceData } = data;
+    const { impressions, clicks, cost, adCampaignData, geoData, keyEventsData } = data;
 
     return (
         <div id="metrics">
             {/* Top Metrics */}
             <div id="cards">
-                {/* Sessions */}
+                {/* Impressions */}
                 <div className="card">
                     <div className="metric-graph">
                         <div className="metric-icon">
                             <img className="metricIcon" alt="icon" />
-                            <div className="metricName">Sessions</div>
+                            <div className="metricName">Impressions</div>
                         </div>
                         <div className="metric">
-                           {/*} <span>{sessions}</span> */}
+                            <span>{impressions}</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Page Views */}
+                {/* Clicks */}
                 <div className="card">
                     <div className="metric-graph">
                         <div className="metric-icon">
                             <img className="metricIcon" alt="icon" />
-                            <div className="metricName">Page Views</div>
+                            <div className="metricName">Clicks</div>
                         </div>
                         <div className="metric">
-                        {/*    <span>{pageViews}</span> */}
+                            <span>{clicks}</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Bounce Rate */}
+                {/* Cost */}
                 <div className="card">
                     <div className="metric-graph">
                         <div className="metric-icon">
                             <img className="metricIcon" alt="icon" />
-                            <div className="metricName">Bounce Rate</div>
+                            <div className="metricName">Cost</div>
                         </div>
                         <div className="metric">
-                          {/*  <span>{bounceRate}%</span> */}
+                            <span>{cost}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Page Performance Analysis */}
+            {/* Ad Campaign Performance */}
             <div id="big-chart">
-                <div id="chart">Page Performance Analysis</div>
-                {/* Render your table using pagePerformanceData */}
+                <div id="chart">Ad Campaign Performance</div>
+                {/* Render your table using adCampaignData */}
             </div>
 
             {/* Geomap and Pie Chart */}
             <div id="map-pie">
-                {/* Geomap of Page Traffic by Region */}
+                {/* Geomap of User Quality by Region */}
                 <div id="map">
-                   {/* {geoData ? (
-                        <div>Geomap of Page Traffic by Region</div>
+                    {geoData ? (
+                        <div>Geomap of User Quality by Region</div>
                     ) : (
                         <div>No geographic data available.</div>
-                    )} */}
+                    )}
                 </div>
 
-                {/* Pie Chart of Page Traffic Sources */}
+                {/* Pie Chart of Key Events from Ad Visitors */}
                 <div id="pie">
-                   {/* {trafficSourceData ? (
-                        <div>Pie Chart of Page Traffic Sources</div>
+                    {keyEventsData ? (
+                        <div>Pie Chart of Key Events from Ad Visitors</div>
                     ) : (
-                        <div>No traffic source data available.</div>
-                    )} */}
+                        <div>No key events data available.</div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
 
-export default PageTrafficMetrics;
+export default AdsMetrics;

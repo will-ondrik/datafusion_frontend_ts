@@ -6,7 +6,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
         return <div>No data available for the behaviour tab.</div>;
     }
 
-    const { pageViews, bounceRate, returningUsers, userFlowData, geoData, newVsReturningData } = data;
+   // const { pageViews, bounceRate, returningUsers, userFlowData, geoData, newVsReturningData } = data;
 
     return (
         <div id="metrics">
@@ -20,7 +20,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Page Views</div>
                         </div>
                         <div className="metric">
-                            <span>{pageViews}</span>
+                        {/*    <span>{pageViews}</span> */}
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Bounce Rate</div>
                         </div>
                         <div className="metric">
-                            <span>{bounceRate}%</span>
+                         {/*   <span>{bounceRate}%</span> */}
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Returning Users</div>
                         </div>
                         <div className="metric">
-                            <span>{returningUsers}</span>
+                           {/* <span>{returningUsers}</span> */}
                         </div>
                     </div>
                 </div>
@@ -62,20 +62,20 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
             <div id="map-pie">
                 {/* Geomap of Bounce Rate by Region */}
                 <div id="map">
-                    {geoData ? (
+                    {/*{geoData ? (
                         <div>Geomap of Bounce Rate by Region</div>
                     ) : (
                         <div>No geographic data available.</div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Pie Chart of New vs Returning Users */}
                 <div id="pie">
-                    {newVsReturningData ? (
+                   {/* {newVsReturningData ? (
                         <div>Pie Chart of New vs Returning Users</div>
                     ) : (
                         <div>No new vs returning data available.</div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>
