@@ -5,7 +5,7 @@ import { User } from "../dtos/user_dtos";
 class AuthService {
     private API_URL: string | null = null;
 
-    setApiUrl() {
+    constructor() {
         this.API_URL = environment.API_BASE_URL;
     }
 
@@ -47,6 +47,8 @@ class AuthService {
      * @returns A promise resolving a success message or rejecting with an error.
      */
     async handleGoogleLogin(): Promise<{ message: string } | Error> {
+        console.log('handle google login called')
+        console.log(`API URL: ${this.API_URL}`)
         try {
             if (!this.API_URL) {
                 return new Error("API URL is not set.")
