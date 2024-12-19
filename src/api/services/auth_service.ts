@@ -61,6 +61,24 @@ class AuthService {
     }
 
     /**
+     * Registers the user by way of Google OAuth2.
+     * 
+     * Sends the user to the server URL to initiate the Google registration process.
+     * 
+     * @returns A promise resolving a success message or rejecting with an error.
+     */
+    async handleGoogleRegistration() {
+        try {
+            if (!this.API_URL) {
+                return new Error("API URL is not set.")
+            }
+            window.location.href = `${this.API_URL}/auth/oauth2/register`;
+        } catch(err) {
+            console.error("Failed to initiate Google registration. Please try again.")
+        }
+    }
+
+    /**
      * ProcessGoogleCallback handles the callback from the Google OAuth2 login flow.
      * 
      * @returns a promise resolving a User object or rejecting with an error.
