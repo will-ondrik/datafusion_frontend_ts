@@ -122,16 +122,17 @@ class AuthService {
             }
 
             const data = await response.json();
+            console.log("Session validated:", data);
 
             // Return valid AuthState
             return {
                 isAuthenticated: true,
-                id: data.id,
-                name: data.name,
-                email: data.email,
-                tier: data.tier,
-                organization: data.organization,
-                isAdmin: data.isAdmin,
+                id: data.user.id,
+                name: data.user.firstName + " " + data.user.lastName,
+                email: data.user.email,
+                tier: data.user.tier,
+                organization: data.user.organization,
+                isAdmin: data.user.isAdmin,
             };
         } catch (err) {
             console.error("Validation error:", err);

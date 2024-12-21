@@ -72,3 +72,4 @@ export interface GaReportsResponse {
     currPeriod: GaReport;
     compPeriod: GaReport;
 }
+

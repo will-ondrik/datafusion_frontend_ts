@@ -18,3 +18,10 @@ export interface ProviderProps {
 export interface GaDataProps {
     data: GaReportsResponse;
 }
+
+
+export interface LineChartProps {
+    name: string
+    labels: string[];
+    dataPoints: number[];
+}

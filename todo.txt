@@ -1,0 +1,28 @@
+ /**
+  Overview Report
+    Metrics: totalUsers, sessions, screenPageViews (Dimensions are Timeframe)
+    Metrics: sessions, totalUsers (Dimensions are sessionSourceMedium, Timeframe)
+    Metrics: totalUsers (Dimensions are country, city, Timeframe)
+    Metrics: sessions (Dimensions are sessionSourceMedium, Timeframe)
+Page Performance Report
+    Metrics: sessions, screenPageViews, bounceRate (Dimensions are Timeframe)
+    Metrics: sessions, screenPageViews, bounceRate (Dimensions are region, Timeframe)
+    Metrics: sessions (Dimensions are region, Timeframe)
+    Metrics: sessions (Dimensions are sessionSourceMedium, Timeframe)
+Time-Location Report
+    Metrics: sessions, screenPageViews, totalUsers (Dimensions are Timeframe)
+    Metrics: sessions, screenPageViews (Dimensions are hour, dayOfWeek)
+    Metrics: totalUsers (Dimensions are country, city)
+    Metrics: sessions (Dimensions are hour, dayOfWeek)
+Engagement Report
+    Metrics: averageSessionDuration, userEngagementDuration, engagementRate (Dimensions are Timeframe)
+    Metrics: sessions, engagedSessions, bounceRate (Dimensions are pagePath, pageTitle, Timeframe)
+    Metrics: userEngagementDuration (Dimensions are country, Timeframe)
+    Metrics: engagementRate (Dimensions are deviceCategory)
+Behaviour Report
+    Metrics: screenPageViews, bounceRate, newVsReturning (Dimensions are Timeframe)
+    Metrics: sessions (Dimensions are previousPagePath, pagePath, nextPagePath)
+    Metrics: bounceRate (Dimensions are region)
+    Metrics: sessions (Dimensions are newVsReturning)
+
+     */
