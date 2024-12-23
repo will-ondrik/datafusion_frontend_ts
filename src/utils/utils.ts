@@ -1,31 +1,63 @@
-import { MetricData } from "../api/dtos/analytics_dtos";
-import { LineChartProps } from "../types/props/Props";
+import { GaReport, MetricData, MetricRecord } from "../api/dtos/analytics_dtos";
 
 /**
- * Sorts metric data by metric type
- * 
- * @param data - Metric data to be sorted
- * @param metricsPayload - Array of metric names to sort data by
- * @returns - Object containing sorted metric data
- */
-export const sortMetricData = (data: MetricData[], metricsPayload: string[]) => {
+ * Sorts metrics for charts, grouping each inner array of data by metric.type.
+ * Returns a 2D array (MetricRecord[][]).
+ *//**
+ * Sorts metrics for charts, grouping each inner array of data by metric.type.
+ * Returns a 2D array (MetricRecord[][]).
+ */export const sortMetricsForCharts = (reports: GaReport[]) => {
 
-    // Init metrics object to hold sorted metrics data
-    let metrics: { [key: string]: MetricData[] | null } = {};
+  // Extract comparison card data and aggregate by metric type
+  const currCardData = reports[0]?.data?.[0];
+  let currMap: { [key: string]: MetricRecord } = {};
 
-    // Init metrics object with an empty array
-    metricsPayload.forEach(metricName => {
-        metrics[metricName] = [];
-    });
-
-    // Add data to metrics object
-    for (let i = 0; i < data.length; i++) {
-        if (metrics[data[i].type]) {
-            metrics[data[i].type]?.push(data[i]);
-        }
+  currCardData.forEach((metricData: MetricData) => {
+    // Create a new metric record if it doesn't exist
+    if (!currMap[metricData.type]) {
+      currMap[metricData.type] = {
+        name: metricData.type,
+        labels: [],
+        dataPoints: [],
+      };
     }
-    return metrics;
-}
+
+    const dimensionValue = Object.values(metricData.dimension)[0];
+    const metricValue = Object.values(metricData.metric)[0];
+
+    // If the metric record exists, add the dimension and metric values to their respective arrays
+    currMap[metricData.type].labels.push(String(dimensionValue));
+    currMap[metricData.type].dataPoints.push(Number(metricValue));
+  });
+
+  // Extract comparison card data and aggregate by metric type
+  const compCardData = reports[1]?.data?.[0];
+  let compMap: { [key: string]: MetricRecord } = {};
+
+  compCardData.forEach((metricData: MetricData) => {
+    // Create a new metric record if it doesn't exist
+    if (!compMap[metricData.type]) {
+      compMap[metricData.type] = {
+        name: metricData.type,
+        labels: [],
+        dataPoints: [],
+      };
+    }
+
+    const dimensionValue = Object.values(metricData.dimension)[0];
+    const metricValue = Object.values(metricData.metric)[0];
+
+    // If the metric record exists, add the dimension and metric values to their respective arrays
+    compMap[metricData.type].labels.push(String(dimensionValue));
+    compMap[metricData.type].dataPoints.push(Number(metricValue));
+  });
+
+  // Return results
+  console.log("Current Map:", currMap);
+  console.log("Comparison Map:", compMap);
+  return { currMap, compMap };
+};
+  
 
 
 /**
@@ -34,42 +66,35 @@ export const sortMetricData = (data: MetricData[], metricsPayload: string[]) => 
  * @param metricData - Metric data to be formatted
  * @returns - Object containing a name (GA4 metric name), labels and data points for card charts
  */
-export const formatMetricsForCards = (metricData: MetricData[] | null) => {
-    if (!metricData) { 
-        return 
-    }
+export const formatMetricsForCharts = (reports: GaReport[]) => {
+    const  currChartData = reports?.[0].data?.[1];
 
-    const chartData: LineChartProps = {
-        name: metricData[0].type,   // Assign metric name
-        labels: [],
-        dataPoints: []
-    }
 
-    for (let i = 0; i < metricData.length; i++) {
-        if (metricData[i].dimension) {
-            // Extract dimension value
-            chartData.labels.push(metricData[i].dimension[0]);
-        }
+    const compChartData = reports?.[1].data?.[1];
 
-        if (metricData[i].metric) {
-            // Extract metric value
-            chartData.dataPoints.push(metricData[i].metric[0]);
-        }
-    }
-    return chartData;
 }
 
 
-export const formatMetricsForTable = (metricData: MetricData[]) => {
+export const formatMetricsForTable = (reports: GaReport[]) => {
+    const  currChartData = reports?.[0].data?.[1];
+
+
+    const compChartData = reports?.[1].data?.[1];
     
 }
 
-export const formatMetricsForGeoMap = (metricData: MetricData[]) => {
+export const formatMetricsForGeoMap = (reports: GaReport[]) => {
+    const  currChartData = reports?.[0].data?.[1];
 
+
+    const compChartData = reports?.[1].data?.[1];
 }
 
-export const formatMetricsForPieChart = (metricData: MetricData[]) => {
+export const formatMetricsForPieChart = (reports: GaReport[]) => {
+    const  currChartData = reports?.[0].data?.[1];
 
+
+    const compChartData = reports?.[1].data?.[1];
 }
 
 
