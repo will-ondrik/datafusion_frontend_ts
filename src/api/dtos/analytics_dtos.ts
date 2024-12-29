@@ -52,16 +52,16 @@ export interface GaProperty {
  * MetricData represents the shape of the row data returned from a Google Analytics report.
  */
 export interface MetricData {
-    type: string;
-    dimension: { [key: string]: string };
-    metric: { [key: string]: number };
+    type: metricType;
+    dimension: { [key: dimensionName]: dimensionValue };
+    metric: { [key: metricName]: metricValue };
 }
 
 /**
  * GaReport represents the shape of a formatted Google Analytics report.
  */
 export interface GaReport {
-    metricTotals: { [key: string]: number };
+    metricTotals: { [key: metricType]: metricValue };
     data: MetricData[][];
 }
 
@@ -71,5 +71,17 @@ export interface GaReport {
 export interface GaReportsResponse {    
     currPeriod: GaReport;
     compPeriod: GaReport;
+}
+
+export type dimensionValue = string;
+export type dimensionName = string;
+export type metricType = string;
+export type metricName = string
+export type metricValue = number;
+
+export interface MetricRecord {
+    name: metricType;
+    labels: dimensionValue[];
+    dataPoints: metricValue[];
 }
 
