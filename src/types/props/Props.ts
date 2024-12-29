@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { GaReportsResponse } from '../../api/dtos/analytics_dtos';
-
+import { MetricData } from '../../api/dtos/analytics_dtos';
 /**
  * Define the shape of the ProviderProps
  * 
@@ -22,6 +22,15 @@ export interface GaDataProps {
 
 export interface LineChartProps {
     name: string
-    labels: string[];
-    dataPoints: number[];
+    currLabels: string[];
+    currDataPoints: number[];
+    compDataPoints: number[];
+    
 }
+
+export interface TableProps {
+    sessions: MetricData
+    totalUsers: MetricData
+    engagementRate: MetricData
+    screenPageViews: MetricData
+  }
