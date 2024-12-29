@@ -9,8 +9,10 @@ import {
     Tooltip,
     Legend
   } from 'chart.js';
-  import { Line } from 'react-chartjs-2';
-  import { LineChartProps } from '../../types/props/Props';
+import { Line } from 'react-chartjs-2';
+import { LineChartProps } from '../../types/props/Props';
+import { useGaData } from '../../context/ga_data_context';
+import Spinner from '../animations/spinner/spinner';
   
   // Registering necessary Chart.js components
   ChartJS.register(
@@ -24,19 +26,51 @@ import {
     Legend
   );
 
-  export const LineChart = ({ name, labels, dataPoints }: LineChartProps) => {
-    // ChartJS
+  export const LineChart: React.FC<{chartData: LineChartProps, isLoading: boolean}> = ({ chartData, isLoading }) => {
     const lineChartData = {
-        labels: labels,
-        datasets: [{
-            label: name,
-            data: dataPoints,
-            fill: false,
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgba(255, 99, 132, 0.2)',
-        }]
+        labels: chartData.currLabels,
+        datasets: [
+            {
+                label: chartData.name,
+                data: chartData.currDataPoints,
+                fill: false,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+            },
+            {
+                label: chartData.name,
+                data: chartData.compDataPoints,
+                fill: false,
+                backgroundColor: 'rgb(111, 99, 132)',
+                borderColor: 'rgba(111, 99, 132, 0.2)',
+            }
+        ],
     };
-    return (
-        <Line data={lineChartData} />
-    )
-  }
+
+    const options = {
+        responsive: true,
+        scales: {
+            x: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Labels',
+                },
+            },
+            y: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Values',
+                },
+            },
+        },
+    };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+    return <Line data={lineChartData} options={options} />;
+};
+
+export default LineChart;
