@@ -124,7 +124,6 @@ class AuthService {
             const data = await response.json();
             console.log("Session validated:", data);
 
-            // Return valid AuthState
             return {
                 isAuthenticated: true,
                 id: data.user.id,
