@@ -27,6 +27,8 @@ import Spinner from '../animations/spinner/spinner';
   );
 
   export const LineChart: React.FC<{chartData: LineChartProps, isLoading: boolean}> = ({ chartData, isLoading }) => {
+    console.log('labels', chartData.currLabels);
+    
     const lineChartData = {
         labels: chartData.currLabels,
         datasets: [
@@ -49,19 +51,24 @@ import Spinner from '../animations/spinner/spinner';
 
     const options = {
         responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+            }
+        },
         scales: {
             x: {
                 display: true,
                 title: {
                     display: true,
-                    text: 'Labels',
+                    text: '',
                 },
             },
             y: {
                 display: true,
                 title: {
                     display: true,
-                    text: 'Values',
+                    text: '',
                 },
             },
         },
