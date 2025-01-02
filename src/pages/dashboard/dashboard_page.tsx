@@ -8,6 +8,7 @@ import PageTrafficMetrics from '../../components/metrics/page-performance/page_p
 import AdsMetrics from '../../components/metrics/ads/ads_metrics';
 import { useGaData } from '../../context/ga_data_context';
 import { GaReport, GaReportsResponse } from '../../api/dtos/analytics_dtos';
+import { sortMetricsForCharts } from '../../utils/utils';
 
 function DashboardPage() {
     const {
@@ -30,16 +31,16 @@ function DashboardPage() {
      * @param batchReportsArr 
      * @returns an array of current and comparison period data
      */
-    const parseDashboardData = (batchReportsArr: any[]): GaReportsResponse => {
+    const parseDashboardData = (batchReportsArr: GaReportsResponse): GaReportsResponse => {
         console.log('batch reports', batchReportsArr);
         if (!Array.isArray(batchReportsArr) || batchReportsArr.length === 0) {
             throw new Error("Invalid or empty batch reports array.");
         }
         
         // Extract the current and comparison period data
-        const CurrPeriod = batchReportsArr[0].CurrPeriod;
-        const CompPeriod = batchReportsArr[0].CompPeriod;
-        console.log('CurrPeriod', CurrPeriod);
+        const CurrPeriod = batchReportsArr[0].currPeriod;
+        const CompPeriod = batchReportsArr[0].compPeriod;
+        console.log('Comp Oeriod', CompPeriod);
     
         const currPeriod: GaReport = {
             metricTotals: CurrPeriod?.metricTotals || {},
@@ -139,14 +140,13 @@ function DashboardPage() {
 
             {/* Metrics Section */}
             <div id="metrics">
-                {isLoading ? (
-                    <div>Loading...</div>
-                ) : error ? (
-                    <div className="error">{error.toString()}</div>
-                ) : (
-                    renderMetrics()
-                )}
-            </div>
+                 {error ? (
+            <div className="error">{error.toString()}</div>
+            ) : (
+            renderMetrics()
+    )}
+</div>
+
         </div>
     );
 }
