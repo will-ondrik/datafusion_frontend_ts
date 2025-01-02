@@ -54,7 +54,7 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
     const generateDefaultStartPeriod = (): GaTimePeriod => {
         const endDate = new Date();
         const startDate = new Date(endDate);
-        startDate.setDate(endDate.getDate() - 30);
+        startDate.setDate(endDate.getDate() - 60);
         return {
             startDate: formatDate(startDate),
             endDate: formatDate(endDate),
@@ -119,6 +119,7 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
 
      /** Fetch data for the active tab when dependencies change */
     useEffect(() => {
+        console.log('start period', startPeriod);
         if (accountsLoading || !defaultProperty || !activeTab || !startPeriod || !comparisonPeriod) {
             console.log(`accountsLoading: ${accountsLoading}, activeTab: ${activeTab}, startPeriod: ${startPeriod}, comparisonPeriod: ${comparisonPeriod}`);
             return;
