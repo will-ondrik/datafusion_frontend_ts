@@ -85,3 +85,26 @@ export interface MetricRecord {
     dataPoints: metricValue[];
 }
 
+
+export interface ChartRecord {
+    name: dimensionValue;
+    numSessions: metricValue;
+    numUsers: metricValue; 
+    engagementRate: metricValue;
+    numViews: metricValue;
+}
+
+
+export interface ChartMap {
+    [key: dimensionName]: ChartRecord;
+}
+
+export interface GeoMap {
+    [key: dimensionName]: MapRecord;
+}
+
+export interface MapRecord {
+    //city: dimensionValue;
+    country: dimensionValue;
+    sessions: metricValue;
+}
