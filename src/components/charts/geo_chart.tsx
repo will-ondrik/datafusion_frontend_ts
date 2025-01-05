@@ -3,7 +3,8 @@ import { Chart } from "react-google-charts";
 import { GeoMap } from "../../api/dtos/analytics_dtos";
 import { Legend } from "chart.js";
 
-export const GeoChart: React.FC<GeoMap>= ({ data }) => {
+//export const GeoChart: React.FC<GeoMap>= ({ data }) => {
+  export const GeoChart = ({ data }: any) => {
   console.log("GeoChart data:", data);
   if (!data) {
     return <div>Loading...</div>;
@@ -11,7 +12,7 @@ export const GeoChart: React.FC<GeoMap>= ({ data }) => {
 
   const geoData = [
     ["Country", "Sessions"],
-    ...Object.values(data).map(({ country, sessions}) => [country, sessions])
+    ...Object.values(data).map(({ country, sessions}: any) => [country, sessions])
   ]
   console.log("GeoData:", geoData);
 
