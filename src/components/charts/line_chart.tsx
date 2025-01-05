@@ -4,44 +4,49 @@ import {
     LinearScale,
     PointElement,
     LineElement,
-    BarElement,
     Title,
     Tooltip,
-    Legend
-  } from 'chart.js';
+    Legend,
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { LineChartProps } from '../../types/props/Props';
-import { useGaData } from '../../context/ga_data_context';
+import { CardData } from '../../api/dtos/analytics_dtos';
 import Spinner from '../animations/spinner/spinner';
-  
-  // Registering necessary Chart.js components
-  ChartJS.register(
+
+// Register necessary Chart.js components
+ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    BarElement,
     Title,
     Tooltip,
     Legend
-  );
+);
 
-  export const LineChart: React.FC<{chartData: LineChartProps, isLoading: boolean}> = ({ chartData, isLoading }) => {
-    console.log('labels', chartData.currLabels);
-    
+export const LineChart: React.FC<{ chartData: CardData; isLoading: boolean }> = ({ chartData, isLoading }) => {
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    // Handle missing data
+    if (!chartData.curr || !chartData.comp) {
+        return <div>No data available to display.</div>;
+    }
+
     const lineChartData = {
-        labels: chartData.currLabels,
+        labels: chartData.curr.labels,
         datasets: [
             {
-                label: chartData.name,
-                data: chartData.currDataPoints,
+                label: `${chartData.curr.name}`,
+                data: chartData.curr.dataPoints,
                 fill: false,
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgba(255, 99, 132, 0.2)',
             },
             {
-                label: chartData.name,
-                data: chartData.compDataPoints,
+                label: `${chartData.comp.name}`,
+                data: chartData.comp.dataPoints,
                 fill: false,
                 backgroundColor: 'rgb(111, 99, 132)',
                 borderColor: 'rgba(111, 99, 132, 0.2)',
@@ -54,7 +59,7 @@ import Spinner from '../animations/spinner/spinner';
         plugins: {
             legend: {
                 display: false,
-            }
+            },
         },
         scales: {
             x: {
@@ -74,9 +79,6 @@ import Spinner from '../animations/spinner/spinner';
         },
     };
 
-    if (isLoading) {
-        return <Spinner />;
-    }
     return <Line data={lineChartData} options={options} />;
 };
 
