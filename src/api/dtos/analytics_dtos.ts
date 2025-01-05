@@ -1,3 +1,5 @@
+import { LineChartProps } from "../../types/props/Props";
+
 /**
  * GaTimePeriod is a data transfer object that is used to represent a time period in Google Analytics.
  */
@@ -62,7 +64,7 @@ export interface MetricData {
  */
 export interface GaReport {
     metricTotals: { [key: metricType]: metricValue };
-    data: MetricData[][];
+    reports: MetricData[][];
 }
 
 /**
@@ -71,6 +73,17 @@ export interface GaReport {
 export interface GaReportsResponse {    
     currPeriod: GaReport;
     compPeriod: GaReport;
+}
+
+export interface CardsMetrics {
+    currMap: { [key: string]: MetricRecord }
+    compMap: { [key: string]: MetricRecord}
+}
+
+export interface FormattedGaData {
+    cardsData: CardsMetrics
+    tableData: TableMap;
+    geoData: GeoMap;
 }
 
 export type dimensionValue = string;
@@ -95,7 +108,7 @@ export interface ChartRecord {
 }
 
 
-export interface ChartMap {
+export interface TableMap {
     [key: dimensionName]: ChartRecord;
 }
 
@@ -107,4 +120,10 @@ export interface MapRecord {
     //city: dimensionValue;
     country: dimensionValue;
     sessions: metricValue;
+}
+
+
+export interface CardData {
+    curr: MetricRecord
+    comp: MetricRecord
 }
