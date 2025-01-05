@@ -11,7 +11,6 @@ import { ProviderProps } from "../types/props/Props";
 const Tier1Route: React.FC<ProviderProps> = ({ children }) => {
     const { isAuthenticated, tier, isLoading } = useAuth();
 
-    // If AuthContext is loading, show a spinner
     if (isLoading) {
         return (
             <div>
@@ -20,7 +19,11 @@ const Tier1Route: React.FC<ProviderProps> = ({ children }) => {
         )
     }
 
-    return isAuthenticated && tier != null && tier >= 1 ? children : <Navigate to="/dashboard" replace />
+    if (isAuthenticated && tier != null && tier >= 1) {
+        return <>{children}</>
+    }
+
+    return <Navigate to="/login" replace />
 }
 
 export default Tier1Route;
