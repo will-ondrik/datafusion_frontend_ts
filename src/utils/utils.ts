@@ -1,4 +1,4 @@
-import { ChartMap, ChartRecord, dimensionName, dimensionValue, GaReport, GeoMap, MapRecord, MetricData, MetricRecord, metricValue } from "../api/dtos/analytics_dtos";
+import { TableMap, ChartRecord, dimensionName, dimensionValue, GaReport, GeoMap, MapRecord, MetricData, MetricRecord, metricValue } from "../api/dtos/analytics_dtos";
 import { TableProps } from "../types/props/Props";
 /**
  * Sorts metrics for charts, grouping each inner array of data by metric.type.
@@ -6,10 +6,10 @@ import { TableProps } from "../types/props/Props";
  *//**
  * Sorts metrics for charts, grouping each inner array of data by metric.type.
  * Returns a 2D array (MetricRecord[][]).
- */export const sortMetricsForCharts = (reports: GaReport[]) => {
+ */export const formatCardMetrics = (reports: MetricData[][]) => {
 
-  // Extract comparison card data and aggregate by metric type
-  const currCardData = reports[0]?.data?.[0];
+
+  const currCardData = reports[0]
  
   let currMap: { [key: string]: MetricRecord } = {};
   currCardData.forEach((metricData: MetricData) => {
@@ -31,7 +31,7 @@ import { TableProps } from "../types/props/Props";
   });
 
   // Extract comparison card data and aggregate by metric type
-  const compCardData = reports[1]?.data?.[0];
+  const compCardData = reports[1]
   
   let compMap: { [key: string]: MetricRecord } = {};
   compCardData.forEach((metricData: MetricData) => {
@@ -53,8 +53,6 @@ import { TableProps } from "../types/props/Props";
   });
 
   // Return results
-  console.log("Current Map:", currMap);
-  console.log("Comparison Map:", compMap);
   return { currMap, compMap };
 };
   
@@ -67,10 +65,11 @@ import { TableProps } from "../types/props/Props";
  * @param metricData - Metric data to be formatted
  * @returns - Object containing a name (GA4 metric name), labels and data points for card charts
  */
-export const formatMetricsForCharts = (reports: GaReport[]): ChartMap => {
-  const currMap: ChartMap = {};
+export const formatTableMetrics = (reports: MetricData[][]): TableMap => {
 
-    const currChartData = reports?.[0].data?.[1];
+  const currMap: TableMap = {};
+
+    const currChartData = reports[0]
     if (!currChartData){
       return currMap;
     }
@@ -118,21 +117,20 @@ export const formatMetricsForCharts = (reports: GaReport[]): ChartMap => {
       }
     }
 
-    console.log("Current Map:", currMap);
     return currMap;
 }
 
 
 export const formatMetricsForTable = (reports: GaReport[]) => {
-    const  currChartData = reports?.[0].data?.[1];
+    const  currChartData = reports?.[0].reports?.[1];
 
 
-    const compChartData = reports?.[1].data?.[1];
+    const compChartData = reports?.[1].reports?.[1];
     
 }
 
-export const formatMetricsForGeoMap = (reports: GaReport[]) => {
-    const  currChartData = reports?.[0].data?.[2];
+export const formatGeoMetrics = (reports: MetricData[][]): GeoMap => {
+    const  currChartData = reports[0]
     const compMap: GeoMap = {};
     currChartData.forEach((metricData: MetricData) => {
       const entry: MapRecord = {
@@ -151,10 +149,10 @@ export const formatMetricsForGeoMap = (reports: GaReport[]) => {
 }
 
 export const formatMetricsForPieChart = (reports: GaReport[]) => {
-    const  currChartData = reports?.[0].data?.[1];
+    const  currChartData = reports?.[0].reports?.[1];
 
 
-    const compChartData = reports?.[1].data?.[1];
+    const compChartData = reports?.[1].reports?.[1];
 }
 
 
@@ -175,6 +173,5 @@ export const formatGaDates = (date: string) => {
   }
 
   const newDate = parsedDate.toString().split(' ');
-  console.log(`Formatted date: ${newDate[1]} ${newDate[2]}, ${newDate[3]}`);
   return `${newDate[1]} ${newDate[2]}, ${newDate[3]}`;
 };
