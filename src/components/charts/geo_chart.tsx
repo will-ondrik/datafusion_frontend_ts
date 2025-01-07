@@ -2,13 +2,14 @@ import React from "react";
 import { Chart } from "react-google-charts";
 import { GeoMap } from "../../api/dtos/analytics_dtos";
 import { Legend } from "chart.js";
+import Spinner from "../animations/spinner/spinner";
 
-//export const GeoChart: React.FC<GeoMap>= ({ data }) => {
-  export const GeoChart = ({ data }: any) => {
+export const GeoChart: React.FC<{ data: GeoMap}> = ({ data }) => {
   console.log("GeoChart data:", data);
   if (!data) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
+  
 
   const geoData = [
     ["Country", "Sessions"],
