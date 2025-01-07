@@ -75,6 +75,7 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
      * @returns FormattedGaData - formatted data for data visualization components.
      */
     const formatDataForDisplay = (batchReports: GaReportsResponse): FormattedGaData => {
+        console.log('formatDataForDisplay:', batchReports);
         const currPeriod: GaReport = {
             metricTotals: batchReports.currPeriod?.metricTotals || {},
             reports: batchReports.currPeriod?.reports || [],
@@ -126,7 +127,6 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
             if (result instanceof Error) {
                 throw result;
             }
-
             // Format Google Analytics data
             const { cardsData, tableData, geoData } = formatDataForDisplay(result);
 
