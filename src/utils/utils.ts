@@ -3,12 +3,7 @@ import { TableProps } from "../types/props/Props";
 /**
  * Sorts metrics for charts, grouping each inner array of data by metric.type.
  * Returns a 2D array (MetricRecord[][]).
- *//**
- * Sorts metrics for charts, grouping each inner array of data by metric.type.
- * Returns a 2D array (MetricRecord[][]).
  */export const formatCardMetrics = (reports: MetricData[][]) => {
-
-
   const currCardData = reports[0]
  
   let currMap: { [key: string]: MetricRecord } = {};
@@ -58,66 +53,55 @@ import { TableProps } from "../types/props/Props";
   
 
 
-
 /**
  * Formats metric and dimension data for card charts
  * 
  * @param metricData - Metric data to be formatted
  * @returns - Object containing a name (GA4 metric name), labels and data points for card charts
  */
-export const formatTableMetrics = (reports: MetricData[][]): TableMap => {
-
-  const currMap: TableMap = {};
+export const formatTableMetrics = (reports: MetricData[][]): any => {
+  console.log('formatTableMetrics:', reports);
+  const currMap: { [key: string]: MetricData } = {};
 
     const currChartData = reports[0]
     if (!currChartData){
       return currMap;
     }
 
-    const currNumEntries = currChartData.length / 5; // 5 items per entry
-    const currEntries: TableProps[] = [];
-
-    for (let i = 0; i < currNumEntries; i++) {
-      const entry: Partial<TableProps> = {};
-
-      currChartData.forEach((metricData: MetricData) => {        
-        if (metricData.type === 'sessions') {
-          entry.sessions = metricData;
-        } else if (metricData.type === 'totalUsers') {
-          entry.totalUsers = metricData;
-        } else if (metricData.type === 'engagementRate') {
-          entry.engagementRate = metricData;
-        } else if (metricData.type === 'screenPageViews') {
-          entry.screenPageViews = metricData;
-        }
-      });
-
-      currEntries.push((entry as TableProps));
-    }  
-
-
-    // Aggregate current data by dimension (url)
-    for (const row of currEntries) {
-
-      const entry: ChartRecord = {
-        name: Object.values(row.engagementRate.dimension)[1],
-        numSessions: Object.values(row.sessions.metric)[0],
-        numUsers: Object.values(row.totalUsers.metric)[0],
-        engagementRate: Object.values(row.engagementRate.metric)[0],
-        numViews: Object.values(row.screenPageViews.metric)[0],
-      }
-
-      if (!currMap[entry.name]) {
-        currMap[entry.name] = entry;
+    currChartData.forEach((metricData: MetricData) => {
+      
+      if (!currMap[metricData.type]){
+        currMap[metricData.type] = metricData;
       } else {
-        currMap[entry.name].numSessions += entry.numSessions;
-        currMap[entry.name].numUsers += entry.numUsers;
-        currMap[entry.name].engagementRate += entry.engagementRate;
-        currMap[entry.name].numViews += entry.numViews;
+        const metricValue = metricData.metric[Object.keys(metricData.metric)[0]];
+        currMap[metricData.type].metric[Object.keys(metricData.metric)[0]] += metricValue;
       }
-    }
 
-    return currMap;
+    });
+
+    const dimMap: { [key: string]: MetricData } = {};
+    Object.values(currMap).forEach((entry: any) => {
+
+      const dimension = entry.dimension[Object.keys(entry.dimension)[1]];
+      if (!dimMap[dimension]) {
+        dimMap[dimension] = {
+          type: entry.type,
+          dimension: dimension,
+          metric: { ...entry.metric }, // Add all metrics
+        };
+      } else {
+        Object.keys(entry.metric).forEach((key) => {
+          if (!dimMap[dimension].metric[key]) {
+            dimMap[dimension].metric[key] = entry.metric[key];
+          } else {
+            dimMap[dimension].metric[key] += entry.metric[key];
+          }
+        });
+      }
+    });
+    
+    console.log("dimMap:", dimMap);
+    return dimMap;
 }
 
 
@@ -130,6 +114,7 @@ export const formatMetricsForTable = (reports: GaReport[]) => {
 }
 
 export const formatGeoMetrics = (reports: MetricData[][]): GeoMap => {
+    console.log('formatGeoMetrics:', reports);
     const  currChartData = reports[0]
     const compMap: GeoMap = {};
     currChartData.forEach((metricData: MetricData) => {
