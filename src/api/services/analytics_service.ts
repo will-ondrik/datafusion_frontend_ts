@@ -5,7 +5,6 @@ class AnalyticsService {
 
     constructor() {
         this.API_URL = environment.API_BASE_URL;
-        console.log(this.API_URL);
     }
 
     /**
