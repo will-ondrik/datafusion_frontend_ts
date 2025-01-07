@@ -1,24 +1,18 @@
 import React from 'react';
-import { ChartMap } from '../../api/dtos/analytics_dtos';
 
-const DataTable: React.FC<{ data: ChartMap }> = ({ data }) => {
-	if (!data) {
-		return <div>Loading...</div>;
-	}
-	
-  return (
-	<tbody>
-		{Object.entries(data).map(([dimensionName, record]) => (
-		<tr key={dimensionName}>
-			<td>{dimensionName}</td>
-			<td>{record.engagementRate}</td>
-			<td>{record.numViews}</td>
-			<td>{record.numSessions}</td>
-			<td>{record.numUsers}</td>
-		</tr>
-		))}
-  	</tbody>
-  );
-}
+const DataTable: React.FC<{ data: any }> = ({ data }) => {
+    return (
+        <>
+            {Object.entries(data).map(([dimensionValue, record]: [string, any]) => (
+                <tr key={dimensionValue}>
+                    <td>{dimensionValue}</td>
+                    {Object.values(record.metric).map((metricValue, index) => (
+                        <td key={index}>{String(metricValue) || '-'}</td>
+                    ))}
+                </tr>
+            ))}
+        </>
+    );
+};
 
 export default DataTable;
