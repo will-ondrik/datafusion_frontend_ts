@@ -75,7 +75,8 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
      * @returns FormattedGaData - formatted data for data visualization components.
      */
     const formatDataForDisplay = (batchReports: GaReportsResponse): FormattedGaData => {
-        console.log('formatDataForDisplay:', batchReports);
+        console.log('Batch reports data:', batchReports);
+        
         const currPeriod: GaReport = {
             metricTotals: batchReports.currPeriod?.metricTotals || {},
             reports: batchReports.currPeriod?.reports || [],
