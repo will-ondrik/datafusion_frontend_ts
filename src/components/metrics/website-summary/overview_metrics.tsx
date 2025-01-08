@@ -1,66 +1,104 @@
 import React from 'react';
 import './overview_metrics.css';
-import { GaDataProps } from '../../../types/props/Props';
-//import { MetricData } from '../../../api/dtos/analytics_dtos';
-import { sortMetricData, formatMetricsForCards } from '../../../utils/utils';
+import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
 import { LineChart } from '../../charts/line_chart';
+import DataTable from '../../tables/table';
+import GeoChart from '../../charts/geo_chart';
 
+const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    const { cardsData, tableData, geoData } = data;
 
-const OverviewMetrics: React.FC<GaDataProps> = ({ data }) => {
-    if (!data) {
-        return <div>No data available for the overview tab.</div>;
-    }
+    const sessionsData = {
+        curr: cardsData.currMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+    };
+    const usersData = {
+        curr: cardsData.currMap['totalUsers'] || { name: 'totalUsers', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['totalUsers'] || { name: 'totalUsers', labels: [], dataPoints: [] },
+    };
+    const viewsData = {
+        curr: cardsData.currMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+    };
 
-    // Deconstruct the data into current and comparison period data
-    const { currPeriod: currPeriodData, compPeriod: compPeriodData } = data;
-    console.log('currPeriodData', currPeriodData);
-    const [currCardsData, currChartData, currGeoData, currPieData] = currPeriodData.data;
-    const [compCardsData, compChartData, compGeoData, compPieData] = compPeriodData.data;
-
-    // Group cards data by metric type        
-    const { totalUsers: totalUsersCurr, sessions: sessionsCurr, screenPageViews: screenPageViewsCurr } = sortMetricData(currCardsData, ['totalUsers', 'sessions', 'screenPageViews']);
-    const { totalUsers: totalUsersComp, sessions: sessionsComp, screenPageViews: screenPageViewsComp } = sortMetricData(compCardsData, ['totalUsers', 'sessions', 'screenPageViews']);
-
-    // Group chart data by metric type
-    const { sessions: sessionsChartData, totalUsers: totalUsersChartData } = sortMetricData(currChartData, ['sessions', 'totalUsers']);
-    const { sessions: sessionsCompChartData, totalUsers: totalUsersCompChartData } = sortMetricData(compChartData, ['sessions', 'totalUsers']);
-
-    // Group geo data by metric type
-    const geoDataCurr = sortMetricData(currGeoData, ['totalUsers']);
-    const geoDataComp = sortMetricData(compGeoData, ['totalUsers']);
-
-    // Group pie data by metric type
-    const pieDataCurr = sortMetricData(currPieData, ['sessions']);
-    const pieDataComp = sortMetricData(compPieData, ['sessions']);
-
-    console.log('Logging all sorted metrics...');
-    console.log('totalUsersCurr', totalUsersCurr);
-    console.log('totalUsersCompChartData', totalUsersCompChartData);
-
-    console.log('sessionsCurr', sessionsCurr);
-    console.log('sessionsComp', sessionsComp);
-
-    console.log('screenPageViewsCurr', screenPageViewsCurr);
-    console.log('screenPageViewsComp', screenPageViewsComp);
-
-    console.log('sessionsChartData', sessionsChartData);
-    console.log('sessionsCompChartData', sessionsCompChartData);
-
-    console.log('totalUsersChartData', totalUsersChartData);
-    console.log('totalUsersCompChartData', totalUsersCompChartData);
-
-    console.log('geoDataCurr', geoDataCurr);
-    console.log('geoDataComp', geoDataComp);
-
-    console.log('pieDataCurr', pieDataCurr);
-    console.log('pieDataComp', pieDataComp);
-
-
-    const chartDataSessionsCurr = formatMetricsForCards(sessionsCurr)
     return (
         <div>
-            <div className='sessions-card'>
+            <div id="cards">
+                <div className="card">
+                    <div className="metric-graph">
+                        <div className="metric-icon">
+                            <img className="metricIcon" alt="icon" />
+                            <div className="metricName">Sessions</div>
+                        </div>
+                        <div className="metric">
+                            <LineChart chartData={sessionsData} isLoading={!cardsData.currMap['sessions']} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card">
+                    <div className="metric-graph">
+                        <div className="metric-icon">
+                            <img className="metricIcon" alt="icon" />
+                            <div className="metricName">Total Users</div>
+                        </div>
+                        <div className="metric">
+                            <LineChart chartData={usersData} isLoading={!cardsData.currMap['totalUsers']} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card">
+                    <div className="metric-graph">
+                        <div className="metric-icon">
+                            <img className="metricIcon" alt="icon" />
+                            <div className="metricName">Views</div>
+                        </div>
+                        <div className="metric">
+                            <LineChart chartData={viewsData} isLoading={!cardsData.currMap['screenPageViews']} />
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {/* DataTable Section */}
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Engagement Rate</th>
+                            <th>Views</th>
+                            <th>Sessions</th>
+                            <th>Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.keys(tableData).length ? (
+                            <DataTable data={tableData} />
+                        ) : (
+                            <tr>
+                                <td colSpan={5} style={{ textAlign: 'center' }}>
+                                    Loading...
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* GeoChart Section */}
+            <div>
+                <h2>Sessions by Country</h2>
+                <div>
+                    {Object.keys(geoData).length ? (
+                        <GeoChart data={geoData} />
+                    ) : (
+                        <div style={{ textAlign: 'center' }}>Loading Geo Data...</div>
+                    )}
+                </div>
+            </div>
+            
         </div>
     );
 };
