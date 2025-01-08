@@ -1,21 +1,26 @@
 import React from 'react';
-import { GaDataProps } from '../../../types/props/Props';
+import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
+import { LineChart } from '../../charts/line_chart';
+import DataTable from '../../tables/table';
+import Spinner from '../../animations/spinner/spinner';
+import GeoChart from '../../charts/geo_chart';
 
-const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
-    if (!data) {
-        return <div>No data available for the engagement tab.</div>;
-    }
+const EngagementMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    console.log('EngagementMetrics', data);
+    const { cardsData, tableData, geoData } = data;
 
-    /*
-    const {
-        averageSessionDuration,
-        userEngagementDuration,
-        engagementRate,
-        pageEngagementData,
-        geoData,
-        deviceEngagementData,
-    } = data;
-     */
+    const avgSessionDurationData = {
+        curr: cardsData.currMap['averageSessionDuration'] || { name: 'averageSessionDuration', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['averageSessionDuration'] || { name: 'averageSessionDuration', labels: [], dataPoints: [] },
+    };
+    const userEngagementDurationData = {
+        curr: cardsData.currMap['userEngagementDuration'] || { name: 'userEngagementDuration', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['userEngagementDuration'] || { name: 'userEngagementDuration', labels: [], dataPoints: [] },
+    };
+    const engagementRateData = {
+        curr: cardsData.currMap['engagementRate'] || { name: 'engagementRate', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['engagementRate'] || { name: 'engagementRate', labels: [], dataPoints: [] },
+    };
 
     return (
         <div id="metrics">
@@ -29,7 +34,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Average Session Duration</div>
                         </div>
                         <div className="metric">
-                           {/* <span>{averageSessionDuration}</span> */}
+                           <LineChart chartData={avgSessionDurationData} isLoading={!cardsData.currMap['averageSessionDuration']} />
                         </div>
                     </div>
                 </div>
@@ -42,7 +47,7 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">User Engagement Duration</div>
                         </div>
                         <div className="metric">
-                           {/* <span>{userEngagementDuration}</span> */}
+                            <LineChart chartData={userEngagementDurationData} isLoading={!cardsData.currMap['userEngagementDuration']} />
                         </div>
                     </div>
                 </div>
@@ -55,36 +60,46 @@ const EngagementMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Engagement Rate</div>
                         </div>
                         <div className="metric">
-                           {/* <span>{engagementRate}%</span> */}
+                            <LineChart chartData={engagementRateData} isLoading={!cardsData.currMap['engagementRate']} />
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Page Engagement Overview */}
+            {/* DataTable Section */}
+            <h2 id="chart">Page Engagement Overview</h2>
             <div id="big-chart">
-                <div id="chart">Page Engagement Overview</div>
-                {/* Render your chart/table using pageEngagementData */}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Page Title</th>
+                            <th>Sessions</th>
+                            <th>Engaged Sessions</th>
+                            <th>Bounce Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.keys(tableData).length ? (
+                            <DataTable data={tableData} />
+                        ) : (
+                            <tr>
+                                <Spinner />
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </div>
 
             {/* Geomap and Pie Chart */}
-            <div id="map-pie">
-                {/* Geomap User Engagement by Country */}
-                <div id="map">
-                   {/* {geoData ? (
-                        <div>Geomap User Engagement by Country</div>
+            <div id='geoMap'>
+                <h2>User Engagement by Country</h2>
+                <div>
+                    {Object.keys(geoData).length ? (
+                        <GeoChart data={geoData} />
                     ) : (
-                        <div>No geographic data available.</div>
-                    )} */}
-                </div>
-
-                {/* Pie Chart of Engagement Rate by Device */}
-                <div id="pie">
-                   {/* {deviceEngagementData ? (
-                        <div>Pie Chart of Engagement Rate by Device</div>
-                    ) : (
-                        <div>No device engagement data available.</div>
-                    )} */}
+                         <Spinner />
+                    )}
                 </div>
             </div>
         </div>

@@ -1,12 +1,25 @@
 import React from 'react';
 import { GaDataProps } from '../../../types/props/Props';
+import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
+import LineChart from '../../charts/line_chart';
 
-const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
-    if (!data) {
-        return <div>No data available for the behaviour tab.</div>;
-    }
+const BehaviourMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    console.log('BehaviourMetrics', data);
+    const { cardsData, tableData, geoData } = data;
 
-   // const { pageViews, bounceRate, returningUsers, userFlowData, geoData, newVsReturningData } = data;
+    const pageViews = {
+        curr: cardsData.currMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+    };
+    const bounceRate = {
+        curr: cardsData.currMap['bounceRate'] || { name: 'bounceRate', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['bounceRate'] || { name: 'bounceRate', labels: [], dataPoints: [] },
+    };
+    const newUsers = {
+        curr: cardsData.currMap['newUsers'] || { name: 'newUsers', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['newUsers'] || { name: 'newUsers', labels: [], dataPoints: [] },
+    };
+
 
     return (
         <div id="metrics">
@@ -20,7 +33,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Page Views</div>
                         </div>
                         <div className="metric">
-                        {/*    <span>{pageViews}</span> */}
+                            <LineChart chartData={pageViews} isLoading={!cardsData.currMap['screenPageViews']} />
                         </div>
                     </div>
                 </div>
@@ -33,7 +46,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Bounce Rate</div>
                         </div>
                         <div className="metric">
-                         {/*   <span>{bounceRate}%</span> */}
+                            <LineChart chartData={bounceRate} isLoading={!cardsData.currMap['bounceRate']} />
                         </div>
                     </div>
                 </div>
@@ -46,7 +59,7 @@ const BehaviourMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Returning Users</div>
                         </div>
                         <div className="metric">
-                           {/* <span>{returningUsers}</span> */}
+                            <LineChart chartData={newUsers} isLoading={!cardsData.currMap['newUsers']} />
                         </div>
                     </div>
                 </div>

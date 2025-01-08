@@ -1,13 +1,27 @@
 import React from 'react';
 import { GaDataProps } from '../../../types/props/Props';
+import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
+import LineChart from '../../charts/line_chart';
+import DataTable from '../../tables/table';
+import Spinner from '../../animations/spinner/spinner';
 
-const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
-    if (!data) {
-        return <div>No data available for the page traffic tab.</div>;
-    }
+const PageTrafficMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    const { cardsData, tableData, geoData } = data;
+
+    const sessions = {
+        curr: cardsData.currMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+    };
+    const pageViews = {
+        curr: cardsData.currMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+    };
+    const bounceRate = {
+        curr: cardsData.currMap['bounceRate'] || { name: 'bounceRate', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['bounceRate'] || { name: 'bounceRate', labels: [], dataPoints: [] },
+    };
 
 
-   // const { sessions, pageViews, bounceRate, pagePerformanceData, geoData, trafficSourceData } = data;
 
     return (
         <div id="metrics">
@@ -21,7 +35,7 @@ const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Sessions</div>
                         </div>
                         <div className="metric">
-                           {/*} <span>{sessions}</span> */}
+                            <LineChart chartData={sessions} isLoading={!cardsData.currMap['sessions']} />
                         </div>
                     </div>
                 </div>
@@ -34,7 +48,7 @@ const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Page Views</div>
                         </div>
                         <div className="metric">
-                        {/*    <span>{pageViews}</span> */}
+                        <LineChart chartData={pageViews} isLoading={!cardsData.currMap['screenPageViews']} />
                         </div>
                     </div>
                 </div>
@@ -47,7 +61,7 @@ const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Bounce Rate</div>
                         </div>
                         <div className="metric">
-                          {/*  <span>{bounceRate}%</span> */}
+                            <LineChart chartData={bounceRate} isLoading={!cardsData.currMap['bounceRate']} />
                         </div>
                     </div>
                 </div>
@@ -56,7 +70,25 @@ const PageTrafficMetrics: React.FC<GaDataProps> = ({ data }) => {
             {/* Page Performance Analysis */}
             <div id="big-chart">
                 <div id="chart">Page Performance Analysis</div>
-                {/* Render your table using pagePerformanceData */}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>Sessions</th>
+                            <th>Page Views</th>
+                            <th>Bounce Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.keys(tableData).length ? (
+                            <DataTable data={tableData} />
+                        ) : (
+                            <tr>
+                                <Spinner />
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </div>
 
             {/* Geomap and Pie Chart */}

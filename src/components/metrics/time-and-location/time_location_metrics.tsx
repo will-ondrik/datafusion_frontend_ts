@@ -1,12 +1,25 @@
 import React from 'react';
 import { GaDataProps } from '../../../types/props/Props';
+import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
+import LineChart from '../../charts/line_chart';
 
-const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
-    if (!data) {
-        return <div>No data available for the time and location tab.</div>;
-    }
+const TimeLocationMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    
+    const { cardsData, tableData, geoData } = data;
 
-    //const { sessionsByHour, pageViewsByDay, usersByRegion, timeTrendsData, geoData, sessionByHourData } = data;
+    const sessions = {
+        curr: cardsData.currMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['sessions'] || { name: 'sessions', labels: [], dataPoints: [] },
+    };
+    const pageViews = {
+        curr: cardsData.currMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
+    };
+    const totalUsers = {
+        curr: cardsData.currMap['totalUsers'] || { name: 'totalUsers', labels: [], dataPoints: [] },
+        comp: cardsData.compMap['totalUsers'] || { name: 'totalUsers', labels: [], dataPoints: [] },
+    };
+
 
     return (
         <div id="metrics">
@@ -20,7 +33,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Sessions By Hour</div>
                         </div>
                         <div className="metric">
-                          {/*  <span>{sessionsByHour}</span> */}
+                            <LineChart chartData={sessions} isLoading={!cardsData.currMap['sessions']} />
                         </div>
                     </div>
                 </div>
@@ -33,7 +46,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Page Views by Day</div>
                         </div>
                         <div className="metric">
-                           {/* <span>{pageViewsByDay}</span> */}
+                            <LineChart chartData={pageViews} isLoading={!cardsData.currMap['screenPageViews']} />
                         </div>
                     </div>
                 </div>
@@ -46,7 +59,7 @@ const TimeLocationMetrics: React.FC<GaDataProps> = ({ data }) => {
                             <div className="metricName">Users by Region</div>
                         </div>
                         <div className="metric">
-                          {/*  <span>{usersByRegion}</span> */}
+                            <LineChart chartData={totalUsers} isLoading={!cardsData.currMap['totalUsers']} />
                         </div>
                     </div>
                 </div>
