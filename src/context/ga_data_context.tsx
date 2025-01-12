@@ -2,8 +2,9 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useGaAccounts } from './ga_accounts_context';
 import { ProviderProps } from '../types/props/Props';
 import AnalyticsService from '../api/services/analytics_service';
-import { GaReportsResponse, GaRequest, GaTimePeriod, FormattedGaData, GaReport, CardsMetrics, TableMap, GeoMap } from '../api/dtos/analytics_dtos';
+import { GaReportsResponse, GaRequest, GaTimePeriod, FormattedGaData, GaReport, CardsMetrics, TableMap, GeoMap, InsightRequest } from '../api/dtos/analytics_dtos';
 import { formatCardMetrics, formatGeoMetrics, formatTableMetrics } from '../utils/utils';
+import AiService from '../api/services/ai_service';
 
 /** Context type definition */
 interface GaDataContextType {
@@ -30,6 +31,7 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
     const [error, setError] = useState<unknown>(null);
 
     const analyticsService = new AnalyticsService();
+    const aiService = new AiService()
     const { defaultProperty, isLoading: accountsLoading } = useGaAccounts();
 
     const formatDate = (date: Date): string => date.toISOString().split('T')[0];
@@ -128,6 +130,7 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
             if (result instanceof Error) {
                 throw result;
             }
+
             // Format Google Analytics data
             const { cardsData, tableData, geoData } = formatDataForDisplay(result);
 
@@ -147,6 +150,34 @@ export const GaDataProvider: React.FC<ProviderProps> = ({ children }) => {
                 console.log('Updated tabData:', updatedData);
                 return updatedData;
             });
+
+            const metricTotals: InsightRequest = {
+                currentData: {
+                    dateRange: `${startPeriod.startDate} - ${startPeriod.endDate}`,
+                    values: result.currPeriod.metricTotals,
+                },
+                comparisonData: {
+                    dateRange: `${comparisonPeriod.startDate} - ${comparisonPeriod.endDate}`,
+                    values: result.compPeriod.metricTotals,
+                }
+            }
+            // API CALL TO GET INSIGHTS
+            const insights = await aiService.getInsights(metricTotals);
+            setTabData((prevData) => {
+                const updatedData = {
+                    ...prevData,
+                    [tabName]: {
+                        ...prevData[tabName],
+                        [`${startPeriod.startDate}-${startPeriod.endDate}`]: {
+                            ...prevData[tabName][`${startPeriod.startDate}-${startPeriod.endDate}`], 
+                            insights: insights
+                        },
+                    },
+                };
+                console.log('Updated tabData:', updatedData);
+                return updatedData;
+            })
+
         } catch (err) {
             console.error('Failed to fetch GA data:', err);
             setError(err);
