@@ -99,17 +99,18 @@ export interface MetricRecord {
 }
 
 
-export interface ChartRecord {
-    name: dimensionValue;
-    numSessions: metricValue;
-    numUsers: metricValue; 
-    engagementRate: metricValue;
-    numViews: metricValue;
+export interface ChartRecord<DimensionKey extends string, MetricKey extends string>{
+    dimensions: {
+        [D in DimensionKey]: number | string | null;
+    }
+    metrics: {
+        [M in MetricKey]: number | string | null;
+    };
 }
 
 
 export interface TableMap {
-    [key: dimensionName]: ChartRecord;
+    [key: dimensionName]: ChartRecord<dimensionName, metricName>;
 }
 
 export interface GeoMap {
@@ -126,4 +127,15 @@ export interface MapRecord {
 export interface CardData {
     curr: MetricRecord
     comp: MetricRecord
+}
+
+export interface InsightRequest {
+    currentData: {
+        dateRange: string
+        values: { [key: string]: number }
+    },
+    comparisonData: {
+        dateRange: string
+        values: { [key: string]: number }
+    }
 }
