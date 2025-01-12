@@ -1,9 +1,11 @@
-import { TableMap, ChartRecord, dimensionName, dimensionValue, GaReport, GeoMap, MapRecord, MetricData, MetricRecord, metricValue } from "../api/dtos/analytics_dtos";
-import { TableProps } from "../types/props/Props";
-/**
+import { GeoMap, MapRecord, MetricData, MetricRecord } from "../api/dtos/analytics_dtos";
+import { useGaData } from "../context/ga_data_context";
+
+/** 
  * Sorts metrics for charts, grouping each inner array of data by metric.type.
  * Returns a 2D array (MetricRecord[][]).
- */export const formatCardMetrics = (reports: MetricData[][]) => {
+ */
+export const formatCardMetrics = (reports: MetricData[][]) => {
   const currCardData = reports[0]
  
   let currMap: { [key: string]: MetricRecord } = {};
@@ -105,14 +107,6 @@ export const formatTableMetrics = (reports: MetricData[][]): any => {
 }
 
 
-export const formatMetricsForTable = (reports: GaReport[]) => {
-    const  currChartData = reports?.[0].reports?.[1];
-
-
-    const compChartData = reports?.[1].reports?.[1];
-    
-}
-
 export const formatGeoMetrics = (reports: MetricData[][]): GeoMap => {
     console.log('formatGeoMetrics:', reports);
     const  currChartData = reports[0]
@@ -132,14 +126,6 @@ export const formatGeoMetrics = (reports: MetricData[][]): GeoMap => {
 
     return compMap;
 }
-
-export const formatMetricsForPieChart = (reports: GaReport[]) => {
-    const  currChartData = reports?.[0].reports?.[1];
-
-
-    const compChartData = reports?.[1].reports?.[1];
-}
-
 
 export const formatGaDates = (date: string) => {
   if (!date || date.length !== 8) {
