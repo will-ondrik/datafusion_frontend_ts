@@ -12,7 +12,6 @@ import { Line } from 'react-chartjs-2';
 import { CardData } from '../../api/dtos/analytics_dtos';
 import Spinner from '../animations/spinner/spinner';
 
-// Register necessary Chart.js components
 ChartJS.register(
     CategoryScale,
     LinearScale,
