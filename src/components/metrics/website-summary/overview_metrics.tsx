@@ -4,8 +4,13 @@ import { FormattedGaData } from '../../../api/dtos/analytics_dtos';
 import { LineChart } from '../../charts/line_chart';
 import DataTable from '../../tables/table';
 import GeoChart from '../../charts/geo_chart';
+import InsightsText from '../../insights/insights_text';
+import { useGaData } from '../../../context/ga_data_context';
+import PulseText from '../../animations/pulse/pulse';
 
 const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
+    const gaData = useGaData();
+
     const { cardsData, tableData, geoData } = data;
 
     const sessionsData = {
@@ -21,6 +26,10 @@ const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
         comp: cardsData.compMap['screenPageViews'] || { name: 'screenPageViews', labels: [], dataPoints: [] },
     };
 
+    const startPeriod = gaData.startPeriod
+    const insights = gaData.tabData['overview']?.[`${startPeriod?.startDate}-${startPeriod?.endDate}`].insights;
+    
+
     return (
         <div>
             <div id="cards">
@@ -32,6 +41,14 @@ const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
                         </div>
                         <div className="metric">
                             <LineChart chartData={sessionsData} isLoading={!cardsData.currMap['sessions']} />
+                        </div>
+                        <div className="insights">
+                            {insights?.['sessions'] ? (
+                                <InsightsText data={insights['sessions']} />
+
+                            ): (
+                                <PulseText text={"Generating insights..."} />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -45,6 +62,14 @@ const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
                         <div className="metric">
                             <LineChart chartData={usersData} isLoading={!cardsData.currMap['totalUsers']} />
                         </div>
+                        <div className="insights">
+                            {insights?.['totalUsers'] ? (
+                                <InsightsText data={insights['totalUsers']} />
+
+                            ): (
+                                <PulseText text={"Generating insights..."} />
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -56,6 +81,14 @@ const OverviewMetrics: React.FC<{ data: FormattedGaData }> = ({ data }) => {
                         </div>
                         <div className="metric">
                             <LineChart chartData={viewsData} isLoading={!cardsData.currMap['screenPageViews']} />
+                        </div>
+                        <div className="insights">
+                            {insights?.['screenPageViews'] ? (
+                                <InsightsText data={insights['screenPageViews']} />
+
+                            ): (
+                                <PulseText text={"Generating insights..."} />
+                            )}
                         </div>
                     </div>
                 </div>
